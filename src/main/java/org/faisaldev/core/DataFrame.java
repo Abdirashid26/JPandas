@@ -41,5 +41,15 @@ public class DataFrame {
     public List<Row> getRows() {
         return rows;
     }
+
+
+    public DataFrame filter(Predicate<Row> condition) {
+        List<Row> filteredRows = rows.stream()
+                .filter(condition)
+                .toList();
+
+        return new DataFrame(columns, filteredRows);
+    }
+
 }
 
