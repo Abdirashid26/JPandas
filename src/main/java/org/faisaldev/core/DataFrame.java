@@ -1,7 +1,9 @@
 package org.faisaldev.core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -75,6 +77,19 @@ public class DataFrame {
         }
 
         return new DataFrame(selectedColumns, selectedRows);
+    }
+
+
+
+    public GroupedDataFrame groupBy(String columnName) {
+        Map<Object, List<Row>> groups = new HashMap<>();
+
+        for (Row row : rows) {
+            Object key = row.get(columnName);
+            groups.computeIfAbsent(key, k -> new ArrayList<>()).add(row);
+        }
+
+        return new GroupedDataFrame(columnName, groups);
     }
 
 

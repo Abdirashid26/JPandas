@@ -26,5 +26,10 @@ public class Main {
         System.out.println("\n Selected Columns (name, city):");
         selected.show(10);
 
+
+        DataFrame grouped = df.groupBy("city").count();
+        System.out.println("\n Grouped by City:");
+        grouped.show(10);
+
     }
 }
