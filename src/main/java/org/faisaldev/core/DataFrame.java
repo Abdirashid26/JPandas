@@ -1,5 +1,6 @@
 package org.faisaldev.core;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -50,6 +51,32 @@ public class DataFrame {
 
         return new DataFrame(columns, filteredRows);
     }
+
+
+    public DataFrame select(String... columnNames) {
+        List<Column<?>> selectedColumns = new ArrayList<>();
+        List<Row> selectedRows = new ArrayList<>();
+
+        // Create new column definitions
+        for (String name : columnNames) {
+            Column<?> col = columns.stream()
+                    .filter(c -> c.getName().equals(name))
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalArgumentException("Column not found: " + name));
+            selectedColumns.add(new Column<>(col.getName(), col.getType()));
+        }
+
+        for (Row row : rows) {
+            Row newRow = new Row();
+            for (String name : columnNames) {
+                newRow.put(name, row.get(name));
+            }
+            selectedRows.add(newRow);
+        }
+
+        return new DataFrame(selectedColumns, selectedRows);
+    }
+
 
 }
 
